@@ -22,6 +22,7 @@ module Twitch
           "PING" => PingCommandParser,
           "372" => AuthenticatedCommandParser,
           "366" => JoinCommandParser,
+          "JOIN" => UserJoinCommandParser,
           "PRIVMSG" => PrivMsgCommandParser,
           "ROOMSTATE" => RoomStateCommandParser,
           "NOTICE" => NoticeCommandParser,
@@ -67,6 +68,15 @@ module Twitch
         else
           Message::UserMessage.new(text: text, user: user)
         end
+      end
+    end
+
+    # Parses a JOIN IRC command
+    class UserJoinCommandParser < CommandParser
+      def call
+        user = message.user
+        text = message.text
+        Message::UserJoin.new(text: text, user: user)
       end
     end
 
