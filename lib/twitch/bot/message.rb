@@ -126,3 +126,4 @@ module Twitch
 end
 
 require_relative "message/user_message"
+require_relative "message/user_join"
