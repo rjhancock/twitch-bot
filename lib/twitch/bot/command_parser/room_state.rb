@@ -6,14 +6,24 @@ module Twitch
       # Parses a ROOMSTATE IRC command.
       class RoomState < Base
         def call
-          case message.tags
-          when /slow/           then SlowMode.new(message).call
-          when /followers-only/ then FollowersOnlyMode.new(message).call
-          when /subs-only/      then SubsOnlyMode.new(message).call
-          when /r9k/            then R9kMode.new(message).call
-          else
-            Message::NotSupported.new(message)
+          result = Message::NotSupported.new(message)
+
+          roomstate_tags.each do |key, parser|
+            result = parser.new(message).call if message.tags.include?(key.to_s)
           end
+
+          result
+        end
+
+        private
+
+        def roomstate_tags
+          {
+            'slow': Twitch::Bot::CommandParser::SlowMode,
+            'followers-only': Twitch::Bot::CommandParser::FollowersOnlyMode,
+            'subs-only': Twitch::Bot::CommandParser::SubsOnlyMode,
+            'r9k': Twitch::Bot::CommandParser::R9kMode
+          }
         end
       end
     end
