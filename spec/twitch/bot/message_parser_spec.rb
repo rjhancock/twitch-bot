@@ -3,9 +3,7 @@
 RSpec.describe Twitch::Bot::MessageParser do
   context "when we receive a PRIVMSG message" do
     it "parses a chat message event" do
-      irc_message = Twitch::Bot::IrcMessage.new(<<~RAW)
-        :enotpoloskun!enotpoloskun@enotpoloskun.tmi.twitch.tv PRIVMSG #enotpoloskun :BibleThump
-      RAW
+      irc_message = Twitch::Bot::IrcMessage.new(":enotpoloskun!enotpoloskun@enotpoloskun.tmi.twitch.tv PRIVMSG #enotpoloskun :BibleThump")
 
       event = described_class.new(irc_message).message
 
@@ -15,9 +13,7 @@ RSpec.describe Twitch::Bot::MessageParser do
     end
 
     it "parses a slow_mode enable event" do
-      irc_message = Twitch::Bot::IrcMessage.new(<<~RAW)
-        @room-id=117474239;slow=10 :tmi.twitch.tv ROOMSTATE #alexwayfer
-      RAW
+      irc_message = Twitch::Bot::IrcMessage.new("@room-id=117474239;slow=10 :tmi.twitch.tv ROOMSTATE #alexwayfer")
 
       event = described_class.new(irc_message).message
 
@@ -27,9 +23,7 @@ RSpec.describe Twitch::Bot::MessageParser do
     end
 
     it "parses a slow mode disable event" do
-      irc_message = Twitch::Bot::IrcMessage.new(<<~RAW)
-        @room-id=117474239;slow=0 :tmi.twitch.tv ROOMSTATE #alexwayfer
-      RAW
+      irc_message = Twitch::Bot::IrcMessage.new("@room-id=117474239;slow=0 :tmi.twitch.tv ROOMSTATE #alexwayfer")
 
       event = described_class.new(irc_message).message
 
@@ -39,9 +33,7 @@ RSpec.describe Twitch::Bot::MessageParser do
     end
 
     it "parses an r9k mode enable event" do
-      irc_message = Twitch::Bot::IrcMessage.new(<<~RAW)
-        @r9k=1;room-id=117474239 :tmi.twitch.tv ROOMSTATE #alexwayfer
-      RAW
+      irc_message = Twitch::Bot::IrcMessage.new("@r9k=1;room-id=117474239 :tmi.twitch.tv ROOMSTATE #alexwayfer")
 
       event = described_class.new(irc_message).message
 
@@ -51,9 +43,7 @@ RSpec.describe Twitch::Bot::MessageParser do
     end
 
     it "parses an r9k mode disable event" do
-      irc_message = Twitch::Bot::IrcMessage.new(<<~RAW)
-        @r9k=0;room-id=117474239 :tmi.twitch.tv ROOMSTATE #alexwayfer
-      RAW
+      irc_message = Twitch::Bot::IrcMessage.new("@r9k=0;room-id=117474239 :tmi.twitch.tv ROOMSTATE #alexwayfer")
 
       event = described_class.new(irc_message).message
 
@@ -63,9 +53,7 @@ RSpec.describe Twitch::Bot::MessageParser do
     end
 
     it "parses a subs-only mode enable event" do
-      irc_message = Twitch::Bot::IrcMessage.new(<<~RAW)
-        @room-id=128644134;subs-only=1 :tmi.twitch.tv ROOMSTATE #sad_satont
-      RAW
+      irc_message = Twitch::Bot::IrcMessage.new("@room-id=128644134;subs-only=1 :tmi.twitch.tv ROOMSTATE #sad_satont")
 
       event = described_class.new(irc_message).message
 
@@ -74,9 +62,7 @@ RSpec.describe Twitch::Bot::MessageParser do
     end
 
     it "parses a subs-only mode disable event" do
-      irc_message = Twitch::Bot::IrcMessage.new(<<~RAW)
-        @room-id=128644134;subs-only=0 :tmi.twitch.tv ROOMSTATE #sad_satont
-      RAW
+      irc_message = Twitch::Bot::IrcMessage.new("@room-id=128644134;subs-only=0 :tmi.twitch.tv ROOMSTATE #sad_satont")
 
       event = described_class.new(irc_message).message
 
@@ -85,9 +71,7 @@ RSpec.describe Twitch::Bot::MessageParser do
     end
 
     it "handles a subscription event" do
-      irc_message = Twitch::Bot::IrcMessage.new(<<~RAW)
-        :twitchnotify!twitchnotify@twitchnotify.tmi.twitch.tv PRIVMSG #enotpoloskun :enotpoloskun just subscribed!
-      RAW
+      irc_message = Twitch::Bot::IrcMessage.new(":twitchnotify!twitchnotify@twitchnotify.tmi.twitch.tv PRIVMSG #enotpoloskun :enotpoloskun just subscribed!")
 
       event = described_class.new(irc_message).message
 
@@ -97,9 +81,7 @@ RSpec.describe Twitch::Bot::MessageParser do
   end
 
   it "handles a MODE event" do
-    irc_message = Twitch::Bot::IrcMessage.new(<<~RAW)
-      :jtv MODE #enotpoloskun +o enotpoloskun
-    RAW
+    irc_message = Twitch::Bot::IrcMessage.new(":jtv MODE #enotpoloskun +o enotpoloskun")
 
     event = described_class.new(irc_message).message
 
@@ -109,9 +91,7 @@ RSpec.describe Twitch::Bot::MessageParser do
 
   it "parses a PING event" do
     host = "tmi.twitch.tv"
-    irc_message = Twitch::Bot::IrcMessage.new(<<~RAW)
-      PING :#{host}
-    RAW
+    irc_message = Twitch::Bot::IrcMessage.new("PING :#{host}")
 
     event = described_class.new(irc_message).message
 
@@ -120,9 +100,7 @@ RSpec.describe Twitch::Bot::MessageParser do
   end
 
   it "parses a NOTIFY event" do
-    irc_message = Twitch::Bot::IrcMessage.new(<<~RAW)
-      :tmi.twitch.tv NOTICE * :Login authentication failed
-    RAW
+    irc_message = Twitch::Bot::IrcMessage.new(":tmi.twitch.tv NOTICE * :Login authentication failed")
 
     event = described_class.new(irc_message).message
 

@@ -10,19 +10,22 @@ Gem::Specification.new do |spec|
   spec.summary       = <<~SUMMARY
     twitch-bot is a Twitch chat client that uses Twitch IRC that can be used as a Twitch chat bot engine.
   SUMMARY
+
   spec.description = <<~DESC
     twitch-bot is a Twitch chat client that uses Twitch IRC.
     With the help of this library you can connect to any Twitch channel and handle chat events.
   DESC
+
   spec.homepage      = "https://github.com/geewiz/twitch-bot"
   spec.license       = "MIT"
 
-  spec.files         = `git ls-files -z`.split("\x0")
+  spec.files          = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
-  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
+  spec.test_files     = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "redis", "~> 4.1"
+  spec.add_dependency "redis"
+  spec.add_dependency "hiredis"
 
   spec.add_development_dependency "bundler", "~> 2.0"
   spec.add_development_dependency "dotenv"

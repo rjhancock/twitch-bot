@@ -20,6 +20,7 @@ RSpec.describe Twitch::Bot::Memory::Redis do
     end
 
     it "works with config connection details" do
+      ENV["REDIS_URL"] ||= "redis://localhost:6379"
       url = URI.parse(ENV["REDIS_URL"])
       config = Twitch::Bot::Config.new(
         settings: {

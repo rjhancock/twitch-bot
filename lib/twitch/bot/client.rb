@@ -21,9 +21,7 @@ module Twitch
 
       attr_reader :channel, :config, :memory
 
-      def initialize(
-        channel: nil, config:, &block
-      )
+      def initialize(channel: nil, config:, &block)
         @config = config
         @channel = Twitch::Bot::Channel.new(channel) if channel
 
@@ -76,6 +74,7 @@ module Twitch
       def dispatch(event)
         type = event.type
         Twitch::Bot::Logger.debug "Dispatching #{type}..."
+
         (event_handlers[type] || []).each do |handler_class|
           Twitch::Bot::Logger.debug "Calling #{handler_class}..."
           handler_class.new(event: event, client: self).call
@@ -110,10 +109,8 @@ module Twitch
                   :input_thread, :output_thread, :messages_queue
 
       def setup_logging
-        Twitch::Bot::Logger.output =
-          config.setting(:log_file) || "twitchbot.log"
-        Twitch::Bot::Logger.level =
-          (config.setting(:log_level) || "info").to_sym
+        Twitch::Bot::Logger.output = config.setting(:log_file) || "twitchbot.log"
+        Twitch::Bot::Logger.level  = (config.setting(:log_level) || "info").to_sym
       end
 
       def startup
@@ -122,6 +119,7 @@ module Twitch
         start_input_thread
         start_output_thread
         adapter.connect
+
         Twitch::Bot::Logger.debug "Started."
       end
 
@@ -145,6 +143,7 @@ module Twitch
 
       def start_input_thread
         Twitch::Bot::Logger.debug("Starting input thread...")
+
         @input_thread = Thread.start do
           while event_loop_running?
             event = adapter.read_data
@@ -155,6 +154,7 @@ module Twitch
 
       def start_output_thread
         Twitch::Bot::Logger.debug("Starting output thread...")
+
         @output_thread = Thread.start do
           while event_loop_running?
             sleep message_delay
@@ -194,3 +194,7 @@ module Twitch
     end
   end
 end
+
+require_relative "client/authenticated_handler"
+require_relative "client/mode_handler"
+require_relative "client/ping_handler"

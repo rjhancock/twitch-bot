@@ -36,6 +36,7 @@ module Twitch
         def read_message_from_terminal
           Twitch::Bot::Logger.debug "Waiting for input..."
           input = read_terminal
+
           Twitch::Bot::Message::UserMessage.new(
             text: input,
             user: client.channel.name,
